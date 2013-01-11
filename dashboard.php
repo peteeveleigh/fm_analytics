@@ -13,18 +13,14 @@ $Settings = $API->get('Settings');
 		padding:1em 0;
 	}
 
- #visitors {
+ .fm_analytics-block {
  	float:left;
  	width:300px;
  	height:300px;
  	font-size:2em;
  }
 
- #pie {
- 	float:left;
- 	width:50%;
- 	height:500px;
- }
+ 
 </style>
 <script src="/controlpanel/addons/apps/fm_analytics/js/oocharts.js" type="text/javascript"></script>
 
@@ -35,60 +31,87 @@ $Settings = $API->get('Settings');
 			oo.setOOId("<?php echo $Settings->get('fm_analytics_ooid')->settingValue(); ?>");
 
 			var aid 		= 	"<?php echo $Settings->get('fm_analytics_gaid')->settingValue(); ?>";
-			var dateFrom 	= 	"01/01/2013";
-			var dateTo 		= 	"01/10/2013";
+			var dateFrom 	= 	new Date($('#dateFrom').val());
+			var dateTo 		= 	new Date($('#dateTo').val());
 			
 			//load reqs
 			oo.load(function()
 			{
+				var dateFrom 	= 	new Date($('#dateFrom').val());
+				var dateTo 		= 	new Date($('#dateTo').val());
+				showStats(dateFrom, dateTo);
+			});
+
+			function showStats(df, dt){
+				var dateFrom 	= 	new Date(df);
+				var dateTo 		= 	new Date(dt);
+
+				var pageviews = new oo.Metric(aid, dateFrom, dateTo);
+				pageviews.setMetric('ga:pageviews');
+				pageviews.draw('pageviews');
+
+
+				var visitors = new oo.Metric(aid, dateFrom, dateTo);
+				visitors.setMetric('ga:visitors');
+				visitors.draw('visitors');
+
+				var bounces = new oo.Metric(aid, dateFrom, dateTo);
+				bounces.setMetric('ga:visitors');
+				bounces.draw('bounces');
+
+
+				var p= new oo.Pie(aid, dateFrom, dateTo);
+				p.setMetric('ga:visitors', 'Visits');
+				p.setDimension('ga:browser');
+				p.setOption('colors', ['red', 'orange', 'blue', 'green']);
+				p.setOption('title', 'Browsers');
+				p.draw('pie');
+
+
+
+				var timeline = new oo.Timeline(aid, dateFrom, dateTo);
+				timeline.addMetric('ga:visitors', 'Visits');
+				timeline.addMetric('ga:newVisits', 'New Visits');
+				timeline.draw('timeline');
+
+			}
+
+			$(function(){
 				//Show date ranges
 				$('#dateFrom').html(dateFrom);
 				$('#dateTo').html(dateTo);
 
 
-
-				//Create a new metric (aid, startDate, endDate)
-				var metric = new oo.Metric(aid, new Date(dateFrom), new Date(dateTo));
-				
-				//Set the metric to pull from the visitor count
-				metric.setMetric('ga:visitors');
-				
-				//draw in the h1 element with id 'met'
-				metric.draw('met');
-
-
-
-				//Create a new pie (aid, startDate, endDate)
-				var p= new oo.Pie(aid, new Date(dateFrom), new Date(dateTo));
-				
-				//set the metric to pull from the visitor count
-				p.setMetric('ga:visitors', 'Visits');
-				
-				//set the dimension to pull from the different browser types
-				p.setDimension('ga:browser');
-				
-				//Set Google visualization options for slice colors
-				p.setOption('colors', ['red', 'orange', 'blue', 'green']);
-				
-				//Set Google visualization option for chart title
-				p.setOption('title', 'Browsers');
-				
-				//draw in the div element with id 'pie'
-				p.draw('pie');
-
-
-
-			});
+				$('#dateForm').on('submit',function(){
+					var df = $('#dateFrom').val();
+					var dt = $('#dateTo').val();
+					showStats(df,dt);
+					return false;
+				})
+			})
 		</script>
 
 <div class="widget" style="width:100%">
   <h2>Experimental <?php echo $Lang->get('Site Stats'); ?></h2>
-  
-  <div id="daterange">Date range: <span id="dateFrom"></span> - <span id="dateTo"></span></div>
+ <form id="dateForm" method="post" action="#">
+  <div id="daterange">Date range (mm/dd/yyyy): <input type="text" id="dateFrom" value="01/01/2013"> - <input type="text" id="dateTo" value="01/11/2013"></span> <input type="submit" value="Refresh"></div>
+</form>
   <div class="bd">
 		
-  				<div id="visitors"><span id="met"></span> Visitors</div>
-				<div id="pie"></div>
+			<div class="fm_analytics-block">
+  				<div><span id="pageviews"></span> Page Views</div>
+  				<div><span id="visitors"></span> Visitors</div>
+  				<div><span id="bounces"></span> Bounces</div>
+  			</div>
 
+  			<div class="fm_analytics-block">
+				<div id="pie"></div>
+			</div>
+
+
+
+			<div class="fm_analytics-block">
+				<div id="timeline"></div>
+			</div>
   </div>
 </div>
