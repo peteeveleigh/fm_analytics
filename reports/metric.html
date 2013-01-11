@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Metric Example</title>
+		
+		<!--Load the oocharts script-->
+		<script src="../js/oocharts.js" type="text/javascript"></script>
+		
+<!--[if lt IE 9]>
+		<link rel="stylesheet" href="/controlpanel/core/assets/css/iebase.css?v=2.0.8" type="text/css" />
+	<![endif]-->
+
+	<link rel="stylesheet" href="/controlpanel/core/assets/css/v2.css?v=2.0.8" type="text/css" />
+	<link rel="stylesheet" href="/controlpanel/core/assets/css/720.css?v=2.0.8" type="text/css" media="only screen and (min-width: 720px)" />
+
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" href="/controlpanel/core/assets/css/720.css?v=2.0.8" type="text/css" />
+	<![endif]-->
+
+	<!--[if IE 7]>
+		<link rel="stylesheet" href="/controlpanel/core/assets/css/ie7.css?v=2.0.8" type="text/css" />
+	<![endif]-->
+
+	<!--[if IE 6]>
+		<link rel="stylesheet" href="/controlpanel/core/assets/css/ie6.css?v=2.0.8" type="text/css" />
+	<![endif]-->
+		</head>
+	<body>
+		<script type="text/javascript">
+		
+			//Set your ooid
+			oo.setOOId("5bc048a4eeea457daa99c62b72b4a857");
+
+			var aid 		= 	66711026;
+			var dateFrom 	= 	"01/01/2013";
+			var dateTo 		= 	"01/10/2013";
+			
+			//load reqs
+			oo.load(function()
+			{
+				//Create a new metric (aid, startDate, endDate)
+				var metric = new oo.Metric(aid, new Date(dateFrom), new Date(dateTo));
+				
+				//Set the metric to pull from the visitor count
+				metric.setMetric('ga:visitors');
+				
+				//draw in the h1 element with id 'met'
+				metric.draw('met');
+			});
+		</script>
+		<h1 id="met"></h1>
+		<h3>visitors today</h3>
+	</body>
+</html>

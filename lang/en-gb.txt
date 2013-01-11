@@ -1,0 +1,4 @@
+{
+	"lang":"en-gb",
+	"Google Analytics":"Google Analytics"
+}
