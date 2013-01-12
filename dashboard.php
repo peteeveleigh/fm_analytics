@@ -17,8 +17,9 @@ $Settings = $API->get('Settings');
 	</form>
 	<div class="bd">
 		<ul>
-			<li class="metric"><span style="font-size:1.2em;font-weight:bold;" id="pageviews"></span> Page Views</li>
 			<li class="metric"><span style="font-size:1.2em;font-weight:bold;" id="visitors"></span> Visitors</li>
+			<li class="metric"><span style="font-size:1.2em;font-weight:bold;" id="newvisitors"></span> New Visitors</li>
+			<li class="metric"><span style="font-size:1.2em;font-weight:bold;" id="pageviews"></span> Page Views</li>
 			<li class="metric"><span style="font-size:1.2em;font-weight:bold;" id="bounces"></span> Bounces</li>
 		</ul>	
 	</div>	
@@ -36,17 +37,29 @@ $Settings = $API->get('Settings');
 	var aid 		= 	"<?php echo $Settings->get('fm_analytics_gaid')->settingValue(); ?>";
 
 	var d = new Date();
-	var curr_day = d.getDate();
+	var df = new Date();
+	var dateTo;
+	var dateFrom;
+
+	d.setDate(d.getDate());
+	df.setDate(df.getDate() - 30);
+	dateTo =  ('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear();
+	dateFrom =  ('0' + (df.getMonth()+1)).slice(-2) + '/' + ('0' + df.getDate()).slice(-2) + '/' + df.getFullYear();
+
+	/*
+	var curr_day = '0' + d.getDate()).slice(-2);
 	var curr_month = d.getMonth() + 1;
 	var curr_year = d.getFullYear();
+	*/
+
+	document.getElementById('dateFrom').value = dateFrom;
+	document.getElementById('dateTo').value = dateTo;
+
+	showStats(dateFrom, dateTo);
 
 	oo.load(function()
 	{
-		var dateFrom 	= 	new Date();
-		var dateTo 		= 	new Date();
-		showStats(dateFrom, dateTo);
-
-	
+		
 		//Set initial date ranges
 		//$('#dateFrom').val(dateFrom);
 		//$('#dateTo').val(dateTo);
@@ -73,8 +86,12 @@ $Settings = $API->get('Settings');
 		visitors.setMetric('ga:visitors');
 		visitors.draw('visitors');
 
+		var newvisitors = new oo.Metric(aid, dateFrom, dateTo);
+		newvisitors.setMetric('ga:newVisits');
+		newvisitors.draw('newvisitors');
+
 		var bounces = new oo.Metric(aid, dateFrom, dateTo);
-		bounces.setMetric('ga:visitors');
+		bounces.setMetric('ga:bounces');
 		bounces.draw('bounces');
 
 	}
