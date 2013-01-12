@@ -27,10 +27,7 @@ $Settings = $API->get('Settings');
 
 
 
-
-
-
-<script src="/controlpanel/addons/apps/fm_analytics/js/oocharts.js" type="text/javascript"></script>
+<script src="<?php echo PERCH_LOGINPATH.'/addons/apps/fm_analytics/js/oocharts.js';?>" type="text/javascript"></script>
 
 <script type="text/javascript">
 		
@@ -38,9 +35,11 @@ $Settings = $API->get('Settings');
 	oo.setOOId("<?php echo $Settings->get('fm_analytics_ooid')->settingValue(); ?>");
 	var aid 		= 	"<?php echo $Settings->get('fm_analytics_gaid')->settingValue(); ?>";
 
-	var dateFrom 	= 	new Date();
-	var dateTo 		= 	new Date();
-	
+	var d = new Date();
+	var curr_day = d.getDate();
+	var curr_month = d.getMonth() + 1;
+	var curr_year = d.getFullYear();
+	alert(curr_month + '/' + curr_day + '/' + curr_year);
 
 	oo.load(function()
 	{
