@@ -1,5 +1,4 @@
 <?php
-
 $Lang  = $API->get('Lang');
 
 $Settings = $API->get('Settings');
@@ -30,11 +29,13 @@ $Settings = $API->get('Settings');
 
 <script src="<?php echo PERCH_LOGINPATH.'/addons/apps/fm_analytics/js/oocharts.js';?>" type="text/javascript"></script>
 
+<script src="<?php echo PERCH_LOGINPATH.'/addons/apps/fm_analytics/js/pikaday.min.js';?>" type="text/javascript"></script>
+
 <script type="text/javascript">
 		
 	//Set your ooid
 	oo.setOOId("<?php echo $Settings->get('fm_analytics_ooid')->settingValue(); ?>");
-	var aid 		= 	"<?php echo $Settings->get('fm_analytics_gaid')->settingValue(); ?>";
+	var aid = "<?php echo $Settings->get('fm_analytics_gaid')->settingValue(); ?>";
 
 	var d = new Date();
 	var df = new Date();
@@ -42,32 +43,30 @@ $Settings = $API->get('Settings');
 	var dateFrom;
 
 	d.setDate(d.getDate());
-	df.setDate(df.getDate() - 30);
+	df.setDate(df.getDate() - 30); // set the dateFrom to be 30 days before the current date
+
+	// do some string manipulation to zero pad the day and  month portions of the date
 	dateTo =  ('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear();
 	dateFrom =  ('0' + (df.getMonth()+1)).slice(-2) + '/' + ('0' + df.getDate()).slice(-2) + '/' + df.getFullYear();
 
-	/*
-	var curr_day = '0' + d.getDate()).slice(-2);
-	var curr_month = d.getMonth() + 1;
-	var curr_year = d.getFullYear();
-	*/
+
 
 	document.getElementById('dateFrom').value = dateFrom;
 	document.getElementById('dateTo').value = dateTo;
 
+	// call the stats display function immediately
 	showStats(dateFrom, dateTo);
+
+	// bind the date picker widget to the form fields
+	var pickerFrom = new Pikaday({ field: document.getElementById('dateFrom'), format: 'mm/dd/yyyy' });
+	var pickerTo = new Pikaday({ field: document.getElementById('dateTo'), format: 'mm/dd/yyyy' });
+
 
 	oo.load(function()
 	{
-		
-		//Set initial date ranges
-		//$('#dateFrom').val(dateFrom);
-		//$('#dateTo').val(dateTo);
-
-
 		$('#dateForm').on('submit',function(){
-			var df = $('#dateFrom').val();
-			var dt = $('#dateTo').val();
+			var df = document.getElementById('dateFrom').value;
+			var dt = document.getElementById('dateTo').value;
 			showStats(df,dt);
 			return false;
 		})
@@ -98,3 +97,6 @@ $Settings = $API->get('Settings');
 
 	
 </script>
+
+
+<link rel="stylesheet" type="text/css" href="<?php echo PERCH_LOGINPATH.'/addons/apps/fm_analytics/css/pikaday.css';?>">
