@@ -39,7 +39,6 @@ $Settings = $API->get('Settings');
 	var curr_day = d.getDate();
 	var curr_month = d.getMonth() + 1;
 	var curr_year = d.getFullYear();
-	alert(curr_month + '/' + curr_day + '/' + curr_year);
 
 	oo.load(function()
 	{
