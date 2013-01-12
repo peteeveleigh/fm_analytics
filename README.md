@@ -31,3 +31,17 @@ OOcharts ID
 You can obtain an OOcharts ID by going to https://oocharts.org/ and clicking the "Get OOId" link.
 
 Copy and paste the long ID into the corresponding field in the Perch settings screen.
+
+
+
+
+Author: Pete Eveleigh / Fantastic Machine
+Twitter: @foamcow / @fmachine
+Copyright © 2013 Pete Eveleigh | BSD & MIT license
+
+
+
+This add on uses the Pikaday datepicker by David Bushell
+http://dbushell.com](http://dbushell.com/
+Copyright © 2012 David Bushell | BSD & MIT license
+

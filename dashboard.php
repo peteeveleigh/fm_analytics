@@ -1,4 +1,23 @@
 <?php
+/*
+
+fm_analytics - https://github.com/fantasticmachine/fm_analytics
+------------
+Author: Pete Eveleigh / Fantastic Machine
+Twitter: @foamcow / @fmachine
+Copyright © 2013 Pete Eveleigh | BSD & MIT license
+
+
+Pikaday - https://github.com/dbushell/Pikaday
+------------
+Pikaday date picker provided by David Bushell
+http://dbushell.com](http://dbushell.com/
+Copyright © 2012 David Bushell | BSD & MIT license
+*/
+
+
+
+
 $Lang  = $API->get('Lang');
 
 $Settings = $API->get('Settings');
